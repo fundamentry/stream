@@ -1,0 +1,70 @@
+{
+  "$schema": "./node_modules/fallow/schema.json",
+  "entry": [
+    "src/index.ts"
+  ],
+  "rules": {
+    "unused-dependencies": "warn",
+    "private-type-leaks": "error",
+    "require-suppression-reason": "error"
+  },
+  "health": {
+    "coverage": "coverage/coverage-final.json",
+    "maxCrap": 5,
+    "maxCyclomatic": 5,
+    "maxCognitive": 5,
+    "maxUnitSize": 20,
+    "crapRefactorBand": 2
+  },
+  "production": {
+    "health": true
+  },
+  "boundaries": {
+    "zones": [
+      {
+        "name": "type",
+        "patterns": [
+          "src/type/**"
+        ]
+      },
+      {
+        "name": "stream",
+        "patterns": [
+          "src/stream/**"
+        ]
+      }
+    ],
+    "rules": [
+      {
+        "from": "type",
+        "allow": []
+      },
+      {
+        "from": "stream",
+        "allow": [
+          "type"
+        ]
+      }
+    ]
+  },
+  "ignoreDependencies": [
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    "eslint-config-airbnb-base",
+    "eslint-config-prettier",
+    "eslint-import-resolver-typescript",
+    "eslint-plugin-deprecation",
+    "eslint-plugin-import",
+    "eslint-plugin-json-format",
+    "eslint-plugin-prettier",
+    "fallow"
+  ],
+  "ignoreExports": [
+    {
+      "file": "src/**/*.ts",
+      "exports": [
+        "*"
+      ]
+    }
+  ]
+}
