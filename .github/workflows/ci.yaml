@@ -73,7 +73,7 @@ jobs:
       - name: Test with coverage
         run: pnpm test:coverage
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: coverage-final
           path: coverage/coverage-final.json
@@ -93,7 +93,7 @@ jobs:
         with:
           fundamentry-token: ${{ secrets.FUNDAMENTRY_BOT_TOKEN }}
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: coverage-final
           path: coverage
