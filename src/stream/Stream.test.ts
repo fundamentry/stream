@@ -87,6 +87,43 @@ describe('Stream', () => {
     });
   });
 
+  describe('isAtEnd', () => {
+    it('must return false when there is a value left to consume', () => {
+      const stream = new Stream([1]);
+
+      expect(stream.isAtEnd()).toBe(false);
+    });
+
+    it('must return true once the source is exhausted', () => {
+      const stream = new Stream([]);
+
+      expect(stream.isAtEnd()).toBe(true);
+    });
+
+    it('must return false for a value that is undefined, distinguishing it from exhaustion', () => {
+      const stream = new Stream([undefined]);
+
+      expect(stream.isAtEnd()).toBe(false);
+      expect(stream.peek()).toBeUndefined();
+    });
+
+    it('must not consume the value when checking whether the stream is at its end', () => {
+      const stream = new Stream([1, 2]);
+
+      expect(stream.isAtEnd()).toBe(false);
+      expect(stream.next()).toBe(1);
+      expect(stream.next()).toBe(2);
+    });
+
+    it('must return true once every value has been consumed', () => {
+      const stream = new Stream([1]);
+
+      stream.next();
+
+      expect(stream.isAtEnd()).toBe(true);
+    });
+  });
+
   describe('consumeIf', () => {
     it('must consume and return the peeked value when the predicate matches', () => {
       const stream = new Stream([1, 2, 3]);

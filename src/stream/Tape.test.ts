@@ -70,6 +70,53 @@ describe('Tape', () => {
       expect(tape.next()).toBeUndefined();
       expect(tape.next()).toBeUndefined();
     });
+
+    it('must not lose a value that is legitimately undefined', () => {
+      const tape = new Tape([1, undefined, 3]);
+
+      expect(tape.next()).toBe(1);
+      expect(tape.next()).toBeUndefined();
+      expect(tape.next()).toBe(3);
+      expect(tape.isAtEnd()).toBe(true);
+    });
+  });
+
+  describe('isAtEnd', () => {
+    it('must return false when there is a value left to consume', () => {
+      const tape = new Tape([1]);
+
+      expect(tape.isAtEnd()).toBe(false);
+    });
+
+    it('must return true when the source starts empty', () => {
+      const tape = new Tape([]);
+
+      expect(tape.isAtEnd()).toBe(true);
+    });
+
+    it('must return false for a buffered value that is undefined, distinguishing it from exhaustion', () => {
+      const tape = new Tape([undefined]);
+
+      expect(tape.isAtEnd()).toBe(false);
+      expect(tape.peek()).toBeUndefined();
+    });
+
+    it('must not advance the tape when checking whether it is at its end', () => {
+      const tape = new Tape([1, 2]);
+
+      expect(tape.isAtEnd()).toBe(false);
+      expect(tape.tell()).toBe(0);
+      expect(tape.next()).toBe(1);
+      expect(tape.next()).toBe(2);
+    });
+
+    it('must return true once every value has been consumed', () => {
+      const tape = new Tape([1]);
+
+      tape.next();
+
+      expect(tape.isAtEnd()).toBe(true);
+    });
   });
 
   describe('tell', () => {

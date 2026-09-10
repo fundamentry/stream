@@ -20,11 +20,8 @@ export class Tape<T> extends Cursor<T> implements Seekable {
   }
 
   override peek(): T | undefined {
-    if (this.#position === this.#buffer.length) {
-      const value = this.#source.next();
-
-      if (value !== undefined) this.#buffer.push(value);
-    }
+    if (this.#position === this.#buffer.length && !this.#source.isAtEnd())
+      this.#buffer.push(this.#source.next() as T);
 
     return this.#buffer[this.#position];
   }
@@ -36,6 +33,10 @@ export class Tape<T> extends Cursor<T> implements Seekable {
       this.#position = nonNegative(this.#position + 1);
 
     return value;
+  }
+
+  override isAtEnd(): boolean {
+    return this.#position === this.#buffer.length && this.#source.isAtEnd();
   }
 
   tell(): NonNegative {

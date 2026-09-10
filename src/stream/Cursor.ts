@@ -5,6 +5,8 @@ export abstract class Cursor<T> implements Peekable<T>, Consumable<T> {
 
   abstract next(): T | undefined;
 
+  abstract isAtEnd(): boolean;
+
   consumeIf<S extends T>(predicate: (value: T) => value is S): S | undefined;
 
   consumeIf(predicate: (value: T) => boolean): T | undefined;

@@ -24,4 +24,10 @@ export class Stream<T> extends Cursor<T> {
 
     return value;
   }
+
+  override isAtEnd(): boolean {
+    this.peek();
+
+    return !!this.#lookahead?.done;
+  }
 }
