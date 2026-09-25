@@ -5,12 +5,12 @@ export interface Seekable {
   seek(position: NonNegative): void;
 }
 
-export interface Peekable<T> {
+export interface Peekable<out T> {
   peek(): T | undefined;
   next(): T | undefined;
 }
 
-export interface Consumable<T = unknown> {
+export interface Consumable<out T = unknown> {
   consumeIf<S extends T>(predicate: (value: T) => value is S): S | undefined;
   consumeIf(predicate: (value: T) => boolean): T | undefined;
 }

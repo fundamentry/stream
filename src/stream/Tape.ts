@@ -5,7 +5,7 @@ import { type Seekable } from '#project/type';
 import { Cursor } from './Cursor.js';
 import { Stream } from './Stream.js';
 
-export class Tape<T> extends Cursor<T> implements Seekable {
+export class Tape<out T> extends Cursor<T> implements Seekable {
   readonly #source: Stream<T>;
 
   readonly #buffer: T[] = [];

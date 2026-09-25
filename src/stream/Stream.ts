@@ -1,6 +1,6 @@
 import { Cursor } from './Cursor.js';
 
-export class Stream<T> extends Cursor<T> {
+export class Stream<out T> extends Cursor<T> {
   readonly #iterator: Iterator<T>;
 
   #lookahead: IteratorResult<T> | undefined;

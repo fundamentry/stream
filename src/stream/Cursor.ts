@@ -1,6 +1,6 @@
 import { type Consumable, type Peekable } from '#project/type';
 
-export abstract class Cursor<T> implements Peekable<T>, Consumable<T> {
+export abstract class Cursor<out T> implements Peekable<T>, Consumable<T> {
   abstract peek(): T | undefined;
 
   abstract next(): T | undefined;
