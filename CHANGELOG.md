@@ -1,3 +1,9 @@
+## 1.2.0
+
+### 🚀 Features
+
+- add immutable 'Point' cursor and rebuild 'Tape' on top of it ([316e8d5](https://github.com/fundamentry/stream/commit/316e8d5))
+
 ## 1.1.0
 
 ### 🚀 Features
