@@ -204,6 +204,76 @@ describe('Tape', () => {
       expect(tape.next()).toBe(2);
     });
 
+    it('must propagate an error thrown by the source and leave the position unchanged', () => {
+      const error = new Error('boom');
+      const next = vi
+        .fn<() => IteratorResult<number>>()
+        .mockReturnValueOnce({ done: false, value: 1 })
+        .mockImplementationOnce(() => {
+          throw error;
+        })
+        .mockReturnValue({ done: true, value: undefined });
+
+      const tape = new Tape({ [Symbol.iterator]: () => ({ next }) });
+
+      tape.next();
+
+      expect(() => tape.seek(nonNegative(2))).toThrow(error);
+      expect(tape.tell()).toBe(1);
+    });
+
+    it('must rewind to a point taken from the tape', () => {
+      const tape = new Tape([1, 2, 3]);
+
+      const start = tape.point();
+
+      tape.next();
+      tape.next();
+      tape.seek(start);
+
+      expect(tape.tell()).toBe(0);
+      expect(tape.point()).toBe(start);
+      expect(tape.next()).toBe(1);
+    });
+
+    it('must seek forward to a point derived from the tape without pulling from the source', () => {
+      const next = vi
+        .fn<() => IteratorResult<number>>()
+        .mockReturnValueOnce({ done: false, value: 1 })
+        .mockReturnValueOnce({ done: false, value: 2 })
+        .mockReturnValue({ done: true, value: undefined });
+
+      const tape = new Tape({ [Symbol.iterator]: () => ({ next }) });
+
+      const { rest } = tape.point().span(() => true);
+
+      next.mockClear();
+      tape.seek(rest);
+
+      expect(tape.tell()).toBe(2);
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('must throw a RangeError when seeking to a point from a different source', () => {
+      const tape = new Tape([1, 2, 3]);
+
+      expect(() => tape.seek(new Tape([1, 2, 3]).point())).toThrow(
+        new RangeError(
+          'Invalid seek position: point is from a different source'
+        )
+      );
+    });
+
+    it('must leave the position unchanged when seeking to a point from a different source fails', () => {
+      const tape = new Tape([1, 2, 3]);
+
+      tape.next();
+
+      expect(() => tape.seek(new Tape([1, 2, 3]).point())).toThrow(RangeError);
+      expect(tape.tell()).toBe(1);
+      expect(tape.next()).toBe(2);
+    });
+
     it('must not re-pull already-buffered values when seeking backward and forward again', () => {
       const next = vi
         .fn<() => IteratorResult<number>>()
@@ -245,6 +315,47 @@ describe('Tape', () => {
       );
 
       expect(result?.toUpperCase()).toBe('A');
+    });
+  });
+
+  describe('point', () => {
+    it('must return a point at the current position', () => {
+      const tape = new Tape([1, 2, 3]);
+
+      tape.next();
+
+      const point = tape.point();
+
+      expect(point.distanceFrom(point.at(nonNegative(0)))).toBe(1);
+      expect(point.peek()).toBe(2);
+    });
+
+    it('must not be affected by later consumption of the tape', () => {
+      const tape = new Tape([1, 2, 3]);
+
+      const point = tape.point();
+
+      tape.next();
+      tape.next();
+
+      expect(point.distanceFrom(point.at(nonNegative(0)))).toBe(0);
+      expect(point.peek()).toBe(1);
+    });
+
+    it('must share buffered values with the tape', () => {
+      const next = vi
+        .fn<() => IteratorResult<number>>()
+        .mockReturnValueOnce({ done: false, value: 1 })
+        .mockReturnValueOnce({ done: false, value: 2 })
+        .mockReturnValue({ done: true, value: undefined });
+
+      const tape = new Tape({ [Symbol.iterator]: () => ({ next }) });
+
+      tape.point().span(() => true);
+      tape.seek(nonNegative(2));
+
+      expect(tape.isAtEnd()).toBe(true);
+      expect(next).toHaveBeenCalledTimes(3);
     });
   });
 

@@ -3,56 +3,57 @@ import { nonNegative, type NonNegative } from '@fundamentry/number';
 import { type Seekable } from '#project/type';
 
 import { Cursor } from './Cursor.js';
-import { Stream } from './Stream.js';
+import { Point } from './Point.js';
 
 export class Tape<out T> extends Cursor<T> implements Seekable {
-  readonly #source: Stream<T>;
+  readonly #origin: Point<T>;
 
-  readonly #buffer: T[] = [];
-
-  #position: NonNegative;
+  #point: Point<T>;
 
   constructor(source: Iterable<T>) {
     super();
 
-    this.#source = new Stream(source);
-    this.#position = nonNegative(0);
+    this.#origin = Point.of(source);
+    this.#point = this.#origin;
   }
 
   override peek(): T | undefined {
-    if (this.#position === this.#buffer.length && !this.#source.isAtEnd())
-      this.#buffer.push(this.#source.next() as T);
-
-    return this.#buffer[this.#position];
+    return this.#point.peek();
   }
 
   override next(): T | undefined {
-    const value = this.peek();
+    const step = this.#point.step();
 
-    if (this.#position < this.#buffer.length)
-      this.#position = nonNegative(this.#position + 1);
+    if (step === undefined) return undefined;
 
-    return value;
+    this.#point = step.rest;
+
+    return step.value;
   }
 
   override isAtEnd(): boolean {
-    return this.#position === this.#buffer.length && this.#source.isAtEnd();
+    return this.#point.isAtEnd();
   }
 
   tell(): NonNegative {
-    return this.#position;
+    return nonNegative(this.#point.distanceFrom(this.#origin));
   }
 
-  seek(position: NonNegative): void {
-    const origin = this.#position;
+  seek(target: NonNegative | Point<unknown>): void {
+    try {
+      this.#point = this.#point.at(target);
+    } catch (error) {
+      if (!(error instanceof RangeError)) throw error;
 
-    this.#position = nonNegative(Math.min(position, this.#buffer.length));
+      throw new RangeError(
+        target instanceof Point
+          ? 'Invalid seek position: point is from a different source'
+          : `Invalid seek position: '${String(target)}'`
+      );
+    }
+  }
 
-    while (this.#position < position)
-      if (this.next() === undefined) {
-        this.#position = origin;
-
-        throw new RangeError(`Invalid seek position: '${String(position)}'`);
-      }
+  point(): Point<T> {
+    return this.#point;
   }
 }

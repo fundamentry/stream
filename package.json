@@ -58,7 +58,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@fundamentry/number": "catalog:"
+    "@fundamentry/number": "catalog:",
+    "@fundamentry/trait": "catalog:"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:",
