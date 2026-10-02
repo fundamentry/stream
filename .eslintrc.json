@@ -59,6 +59,8 @@
         "vitest.config.ts"
       ],
       "rules": {
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
         "import/no-extraneous-dependencies": [
           "error",
           {
