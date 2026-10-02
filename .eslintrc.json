@@ -29,6 +29,11 @@
             "pattern": "@(app|src|project)/*",
             "group": "parent",
             "position": "before"
+          },
+          {
+            "pattern": "#project/*",
+            "group": "parent",
+            "position": "before"
           }
         ],
         "pathGroupsExcludedImportTypes": [
