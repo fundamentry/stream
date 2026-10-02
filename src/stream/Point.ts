@@ -4,12 +4,12 @@ import { type Comparable } from '@fundamentry/trait';
 import { Memo } from './Memo.js';
 
 export namespace Point {
-  export interface Step<out T, out S extends T = T> {
+  export interface Step<out T, out S = T> {
     readonly value: S;
     readonly rest: Point<T>;
   }
 
-  export interface Span<out T, out S extends T = T> {
+  export interface Span<out T, out S = T> {
     readonly values: S[];
     readonly rest: Point<T>;
   }

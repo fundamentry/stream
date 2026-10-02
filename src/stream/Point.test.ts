@@ -1,10 +1,28 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 
 import { nonNegative } from '@fundamentry/number';
 
 import { Point } from './Point.js';
 
 describe('Point', () => {
+  describe('Step', () => {
+    it('must allow a value that is not one of the stream values', () => {
+      expectTypeOf<Point.Step<number, string>>().toEqualTypeOf<{
+        readonly value: string;
+        readonly rest: Point<number>;
+      }>();
+    });
+  });
+
+  describe('Span', () => {
+    it('must allow values that are not stream values', () => {
+      expectTypeOf<Point.Span<number, string>>().toEqualTypeOf<{
+        readonly values: string[];
+        readonly rest: Point<number>;
+      }>();
+    });
+  });
+
   describe('of', () => {
     it('must start at the beginning of the source', () => {
       const point = Point.of([1, 2, 3]);
@@ -117,6 +135,12 @@ describe('Point', () => {
       expect(second?.value).toBeUndefined();
       expect(second?.rest.peek()).toBe(3);
     });
+
+    it('must type the value as a stream value', () => {
+      expectTypeOf(Point.of([1, 2]).step()).toEqualTypeOf<
+        Point.Step<number, number> | undefined
+      >();
+    });
   });
 
   describe('stepIf', () => {
@@ -150,6 +174,14 @@ describe('Point', () => {
       );
 
       expect(result?.value.toUpperCase()).toBe('A');
+    });
+
+    it('must type the narrowed value when given a type guard', () => {
+      const point = Point.of<number | string>([1, 'a']);
+
+      expectTypeOf(
+        point.stepIf((value): value is number => typeof value === 'number')
+      ).toEqualTypeOf<Point.Step<number | string, number> | undefined>();
     });
   });
 
