@@ -50,6 +50,8 @@
         "src/**/*"
       ],
       "rules": {
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
         "@typescript-eslint/no-namespace": "off"
       }
     },
@@ -59,8 +61,6 @@
         "vitest.config.ts"
       ],
       "rules": {
-        "import/extensions": "off",
-        "import/no-unresolved": "off",
         "import/no-extraneous-dependencies": [
           "error",
           {
