@@ -1,3 +1,15 @@
+# 2.0.0
+
+### 🚀 Features
+
+- ⚠️  use integer types from @fundamentry/number ([3fadf97](https://github.com/fundamentry/stream/commit/3fadf97))
+- ⚠️  migrate to '@fundamentry/trait' 3.0.0 ([d24796c](https://github.com/fundamentry/stream/commit/d24796c))
+
+### ⚠️  Breaking Changes
+
+- migrate to '@fundamentry/trait' 3.0.0  ([d24796c](https://github.com/fundamentry/stream/commit/d24796c))
+- use integer types from @fundamentry/number  ([3fadf97](https://github.com/fundamentry/stream/commit/3fadf97))
+
 ## 1.3.0
 
 ### 🚀 Features
