@@ -22,8 +22,8 @@ catalogs:
       specifier: 1.1.11
       version: 1.1.11
     '@fundamentry/number':
-      specifier: 1.0.3
-      version: 1.0.3
+      specifier: 1.2.0
+      version: 1.2.0
     '@fundamentry/trait':
       specifier: 1.1.0
       version: 1.1.0
@@ -109,7 +109,7 @@ importers:
     dependencies:
       '@fundamentry/number':
         specifier: 'catalog:'
-        version: 1.0.3
+        version: 1.2.0
       '@fundamentry/trait':
         specifier: 'catalog:'
         version: 1.1.0
@@ -939,6 +939,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@fundamentry/brand@2.0.1':
+    resolution: {integrity: sha512-3Mc2rK5/YPTuJYKu5VNYSbrXA9H0cxMRFhRB4y8hPe83pCBrm0jyJtm1WUttQuuxsLTYqScj1vuYpByzxl1gmg==, tarball: https://npm.pkg.github.com/download/@fundamentry/brand/2.0.1/4350c0dc19e5c9051be9de44a56bfabc6502aec0}
+
   '@fundamentry/eslint-config-base@1.1.8':
     resolution: {integrity: sha512-frbTHjKHozhwjSkiwHLemqaceu1u4MIR9H7SfBKa0Gm8v2+dYwB9sDMltFM7KUiG0FWH3Ywq9clRtRXG5o6XyA==, tarball: https://npm.pkg.github.com/download/@fundamentry/eslint-config-base/1.1.8/c67dfda7e64fc84edf5e0bcd518f3002e3699c39}
     engines: {node: '>=24', pnpm: '>=11'}
@@ -976,8 +979,8 @@ packages:
       eslint-plugin-import: 2.32.0
       typescript: 6.0.3
 
-  '@fundamentry/number@1.0.3':
-    resolution: {integrity: sha512-OFKlNmBi7jozJMXYu+uMA0Ak06viHfXyjkmT/x2O9op5kmkkMiCW44bPXgzs/NKLaCtqsbv/A12nxn1y9CF+MQ==, tarball: https://npm.pkg.github.com/download/@fundamentry/number/1.0.3/d378cb7442a8b017ddafb11f20825e3b558bca34}
+  '@fundamentry/number@1.2.0':
+    resolution: {integrity: sha512-mQB00tDRzZ+WfhAgHZ6Z/vy0AvYaE4KiF1ot/OT3L59rnk1RFezcn2FtqeC2AC7v8kYegKCplO2AtrXukCSIdw==, tarball: https://npm.pkg.github.com/download/@fundamentry/number/1.2.0/c8fc874044211116457cc624470c0c658bfd6df0}
 
   '@fundamentry/trait@1.1.0':
     resolution: {integrity: sha512-YwsXLvaXyFd2qFQUrhM3z9Vk5khuowlZA/XlIW+QlttKwx6FJoB9N6jtyWv3Ks4pEvK2YssG4LltLxjW9pWc2g==, tarball: https://npm.pkg.github.com/download/@fundamentry/trait/1.1.0/84c1b432516dacba963db346b6b35fee2cffd0d4}
@@ -3928,7 +3931,7 @@ snapshots:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.8
       '@babel/helper-compilation-targets': 7.29.7
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))
       '@babel/helpers': 7.29.7
       '@babel/parser': 7.29.8
       '@babel/template': 7.29.7
@@ -4010,7 +4013,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7)':
+  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/helper-module-imports': 7.29.7
@@ -4315,7 +4318,7 @@ snapshots:
   '@babel/plugin-transform-modules-amd@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))
       '@babel/helper-plugin-utils': 7.29.7
     transitivePeerDependencies:
       - supports-color
@@ -4323,7 +4326,7 @@ snapshots:
   '@babel/plugin-transform-modules-commonjs@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))
       '@babel/helper-plugin-utils': 7.29.7
     transitivePeerDependencies:
       - supports-color
@@ -4331,7 +4334,7 @@ snapshots:
   '@babel/plugin-transform-modules-systemjs@7.29.8(@babel/core@7.29.7(supports-color@7.2.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))
       '@babel/helper-plugin-utils': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
       '@babel/traverse': 7.29.8
@@ -4341,7 +4344,7 @@ snapshots:
   '@babel/plugin-transform-modules-umd@7.29.7(@babel/core@7.29.7(supports-color@7.2.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))
       '@babel/helper-plugin-utils': 7.29.7
     transitivePeerDependencies:
       - supports-color
@@ -4879,6 +4882,8 @@ snapshots:
   '@fallow-cli/win32-x64-msvc@3.31.0':
     optional: true
 
+  '@fundamentry/brand@2.0.1': {}
+
   '@fundamentry/eslint-config-base@1.1.8(eslint-config-airbnb-base@15.0.0(eslint-plugin-import@2.32.0)(eslint@8.57.1(supports-color@7.2.0)))(eslint-plugin-import@2.32.0)(eslint@8.57.1(supports-color@7.2.0))':
     dependencies:
       eslint: 8.57.1(supports-color@7.2.0)
@@ -4909,7 +4914,9 @@ snapshots:
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.71.0(eslint@8.57.1(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint-import-resolver-typescript@4.4.5)(eslint@8.57.1(supports-color@7.2.0))
       typescript: 6.0.3
 
-  '@fundamentry/number@1.0.3': {}
+  '@fundamentry/number@1.2.0':
+    dependencies:
+      '@fundamentry/brand': 2.0.1
 
   '@fundamentry/trait@1.1.0': {}
 

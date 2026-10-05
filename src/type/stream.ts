@@ -1,8 +1,8 @@
-import { type NonNegative } from '@fundamentry/number';
+import { type NonNegativeInteger } from '@fundamentry/number';
 
 export interface Seekable {
-  tell(): NonNegative;
-  seek(position: NonNegative): void;
+  tell(): NonNegativeInteger;
+  seek(position: NonNegativeInteger): void;
 }
 
 export interface Peekable<out T> {

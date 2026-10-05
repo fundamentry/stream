@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { nonNegative } from '@fundamentry/number';
+import {
+  nonNegativeInteger,
+  type NonNegativeInteger,
+} from '@fundamentry/number';
 
 import { Memo } from './Memo.js';
 
@@ -26,7 +29,7 @@ describe('Memo', () => {
     it('must create a memo that is assignable to a memo of a wider type', () => {
       const memo: Memo<number | string> = new Memo<number>([1]);
 
-      expect(memo.get(nonNegative(0))).toBe(1);
+      expect(memo.get(nonNegativeInteger(0))).toBe(1);
     });
   });
 
@@ -34,30 +37,30 @@ describe('Memo', () => {
     it('must return true for an index the source can produce', () => {
       const memo = new Memo([1, 2, 3]);
 
-      expect(memo.has(nonNegative(0))).toBe(true);
-      expect(memo.has(nonNegative(2))).toBe(true);
+      expect(memo.has(nonNegativeInteger(0))).toBe(true);
+      expect(memo.has(nonNegativeInteger(2))).toBe(true);
     });
 
     it('must return false for an index past the end of the source', () => {
       const memo = new Memo([1, 2]);
 
-      expect(memo.has(nonNegative(2))).toBe(false);
+      expect(memo.has(nonNegativeInteger(2))).toBe(false);
     });
 
     it('must return false for an empty source', () => {
-      expect(new Memo([]).has(nonNegative(0))).toBe(false);
+      expect(new Memo([]).has(nonNegativeInteger(0))).toBe(false);
     });
 
     it('must return true for a value that is legitimately undefined', () => {
       const memo = new Memo([undefined]);
 
-      expect(memo.has(nonNegative(0))).toBe(true);
+      expect(memo.has(nonNegativeInteger(0))).toBe(true);
     });
 
     it('must pull only as far as the requested index', () => {
       const { next, iterable } = source(1, 2, 3);
 
-      new Memo(iterable).has(nonNegative(1));
+      new Memo(iterable).has(nonNegativeInteger(1));
 
       expect(next).toHaveBeenCalledTimes(2);
     });
@@ -67,9 +70,9 @@ describe('Memo', () => {
 
       const memo = new Memo(iterable);
 
-      memo.has(nonNegative(2));
-      memo.has(nonNegative(0));
-      memo.has(nonNegative(2));
+      memo.has(nonNegativeInteger(2));
+      memo.has(nonNegativeInteger(0));
+      memo.has(nonNegativeInteger(2));
 
       expect(next).toHaveBeenCalledTimes(3);
     });
@@ -79,9 +82,9 @@ describe('Memo', () => {
 
       const memo = new Memo(iterable);
 
-      memo.has(nonNegative(5));
-      memo.has(nonNegative(5));
-      memo.has(nonNegative(1));
+      memo.has(nonNegativeInteger(5));
+      memo.has(nonNegativeInteger(5));
+      memo.has(nonNegativeInteger(1));
 
       expect(next).toHaveBeenCalledTimes(2);
     });
@@ -100,44 +103,50 @@ describe('Memo', () => {
         }),
       });
 
-      expect(() => memo.has(nonNegative(2))).toThrow('boom');
-      expect(memo.slice(nonNegative(0), nonNegative(1))).toEqual([1]);
-      expect(memo.has(nonNegative(1))).toBe(true);
-      expect(memo.slice(nonNegative(0), nonNegative(3))).toEqual([1, 3]);
+      expect(() => memo.has(nonNegativeInteger(2))).toThrow('boom');
+      expect(memo.slice(nonNegativeInteger(0), nonNegativeInteger(1))).toEqual([
+        1,
+      ]);
+      expect(memo.has(nonNegativeInteger(1))).toBe(true);
+      expect(memo.slice(nonNegativeInteger(0), nonNegativeInteger(3))).toEqual([
+        1, 3,
+      ]);
     });
   });
 
   describe('reaches', () => {
     it('must return true for offset 0, even for an empty source', () => {
-      expect(new Memo([]).reaches(nonNegative(0))).toBe(true);
+      expect(new Memo([]).reaches(nonNegativeInteger(0))).toBe(true);
     });
 
     it('must return true for every offset up to and including the end', () => {
       const memo = new Memo([1, 2]);
 
-      expect(memo.reaches(nonNegative(1))).toBe(true);
-      expect(memo.reaches(nonNegative(2))).toBe(true);
+      expect(memo.reaches(nonNegativeInteger(1))).toBe(true);
+      expect(memo.reaches(nonNegativeInteger(2))).toBe(true);
     });
 
     it('must return false for an offset past the end', () => {
-      expect(new Memo([1, 2]).reaches(nonNegative(3))).toBe(false);
+      expect(new Memo([1, 2]).reaches(nonNegativeInteger(3))).toBe(false);
     });
 
     it('must return false for an offset that is not an integer', () => {
-      expect(new Memo([1, 2]).reaches(nonNegative(1.5))).toBe(false);
+      expect(new Memo([1, 2]).reaches(1.5 as NonNegativeInteger)).toBe(false);
     });
 
     it('must return false for an infinite offset without pulling from the source', () => {
       const { next, iterable } = source(1);
 
-      expect(new Memo(iterable).reaches(nonNegative(Infinity))).toBe(false);
+      expect(new Memo(iterable).reaches(Infinity as NonNegativeInteger)).toBe(
+        false
+      );
       expect(next).not.toHaveBeenCalled();
     });
 
     it('must pull only as far as the value before the offset', () => {
       const { next, iterable } = source(1, 2, 3);
 
-      new Memo(iterable).reaches(nonNegative(2));
+      new Memo(iterable).reaches(nonNegativeInteger(2));
 
       expect(next).toHaveBeenCalledTimes(2);
     });
@@ -147,28 +156,28 @@ describe('Memo', () => {
     it('must return the value at the index', () => {
       const memo = new Memo([1, 2, 3]);
 
-      expect(memo.get(nonNegative(0))).toBe(1);
-      expect(memo.get(nonNegative(2))).toBe(3);
+      expect(memo.get(nonNegativeInteger(0))).toBe(1);
+      expect(memo.get(nonNegativeInteger(2))).toBe(3);
     });
 
     it('must return the same value when read repeatedly or out of order', () => {
       const memo = new Memo([1, 2, 3]);
 
-      expect(memo.get(nonNegative(2))).toBe(3);
-      expect(memo.get(nonNegative(0))).toBe(1);
-      expect(memo.get(nonNegative(2))).toBe(3);
+      expect(memo.get(nonNegativeInteger(2))).toBe(3);
+      expect(memo.get(nonNegativeInteger(0))).toBe(1);
+      expect(memo.get(nonNegativeInteger(2))).toBe(3);
     });
 
     it('must return undefined for an index past the end of the source', () => {
       const memo = new Memo([1]);
 
-      expect(memo.get(nonNegative(1))).toBeUndefined();
+      expect(memo.get(nonNegativeInteger(1))).toBeUndefined();
     });
 
     it('must pull from the source as needed', () => {
       const { next, iterable } = source(1, 2, 3);
 
-      expect(new Memo(iterable).get(nonNegative(1))).toBe(2);
+      expect(new Memo(iterable).get(nonNegativeInteger(1))).toBe(2);
       expect(next).toHaveBeenCalledTimes(2);
     });
   });
@@ -177,22 +186,26 @@ describe('Memo', () => {
     it('must return the values from start up to but excluding end', () => {
       const memo = new Memo([1, 2, 3, 4]);
 
-      expect(memo.slice(nonNegative(1), nonNegative(3))).toEqual([2, 3]);
+      expect(memo.slice(nonNegativeInteger(1), nonNegativeInteger(3))).toEqual([
+        2, 3,
+      ]);
     });
 
     it('must pull from the source as needed', () => {
       const { next, iterable } = source(1, 2, 3);
 
-      expect(new Memo(iterable).slice(nonNegative(0), nonNegative(2))).toEqual([
-        1, 2,
-      ]);
+      expect(
+        new Memo(iterable).slice(nonNegativeInteger(0), nonNegativeInteger(2))
+      ).toEqual([1, 2]);
       expect(next).toHaveBeenCalledTimes(2);
     });
 
     it('must stop at the end of the source', () => {
       const memo = new Memo([1, 2]);
 
-      expect(memo.slice(nonNegative(1), nonNegative(5))).toEqual([2]);
+      expect(memo.slice(nonNegativeInteger(1), nonNegativeInteger(5))).toEqual([
+        2,
+      ]);
     });
 
     it('must return an empty array when start is not before end', () => {
@@ -200,15 +213,19 @@ describe('Memo', () => {
 
       const memo = new Memo(iterable);
 
-      expect(memo.slice(nonNegative(1), nonNegative(1))).toEqual([]);
-      expect(memo.slice(nonNegative(2), nonNegative(1))).toEqual([]);
+      expect(memo.slice(nonNegativeInteger(1), nonNegativeInteger(1))).toEqual(
+        []
+      );
+      expect(memo.slice(nonNegativeInteger(2), nonNegativeInteger(1))).toEqual(
+        []
+      );
       expect(next).not.toHaveBeenCalled();
     });
 
     it('must include values that are legitimately undefined', () => {
       const memo = new Memo([1, undefined, 3]);
 
-      expect(memo.slice(nonNegative(0), nonNegative(3))).toEqual([
+      expect(memo.slice(nonNegativeInteger(0), nonNegativeInteger(3))).toEqual([
         1,
         undefined,
         3,
@@ -218,9 +235,11 @@ describe('Memo', () => {
     it('must return a copy that does not expose the buffer', () => {
       const memo = new Memo([1, 2]);
 
-      memo.slice(nonNegative(0), nonNegative(2)).push(99);
+      memo.slice(nonNegativeInteger(0), nonNegativeInteger(2)).push(99);
 
-      expect(memo.slice(nonNegative(0), nonNegative(3))).toEqual([1, 2]);
+      expect(memo.slice(nonNegativeInteger(0), nonNegativeInteger(3))).toEqual([
+        1, 2,
+      ]);
     });
   });
 });

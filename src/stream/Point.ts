@@ -1,4 +1,9 @@
-import { nonNegative, type NonNegative } from '@fundamentry/number';
+import {
+  integer,
+  nonNegativeInteger,
+  type Integer,
+  type NonNegativeInteger,
+} from '@fundamentry/number';
 import { type Comparable } from '@fundamentry/trait';
 
 import { Memo } from './Memo.js';
@@ -18,15 +23,15 @@ export namespace Point {
 export class Point<out T> implements Comparable<Point<unknown>> {
   readonly #memo: Memo<T>;
 
-  readonly #offset: NonNegative;
+  readonly #offset: NonNegativeInteger;
 
-  private constructor(memo: Memo<T>, offset: NonNegative) {
+  private constructor(memo: Memo<T>, offset: NonNegativeInteger) {
     this.#memo = memo;
     this.#offset = offset;
   }
 
   static of<T>(source: Iterable<T>): Point<T> {
-    return new Point(new Memo(source), nonNegative(0));
+    return new Point(new Memo(source), nonNegativeInteger(0));
   }
 
   peek(): T | undefined {
@@ -42,7 +47,7 @@ export class Point<out T> implements Comparable<Point<unknown>> {
 
     return {
       value: this.peek() as T,
-      rest: new Point(this.#memo, nonNegative(this.#offset + 1)),
+      rest: new Point(this.#memo, nonNegativeInteger(this.#offset + 1)),
     };
   }
 
@@ -66,7 +71,7 @@ export class Point<out T> implements Comparable<Point<unknown>> {
     let end = this.#offset;
 
     while (this.#memo.has(end) && predicate(this.#memo.get(end) as T))
-      end = nonNegative(end + 1);
+      end = nonNegativeInteger(end + 1);
 
     return {
       values: this.#memo.slice(this.#offset, end),
@@ -74,7 +79,7 @@ export class Point<out T> implements Comparable<Point<unknown>> {
     };
   }
 
-  at(target: NonNegative | Point<unknown>): Point<T> {
+  at(target: NonNegativeInteger | Point<unknown>): Point<T> {
     if (target instanceof Point) {
       if (!this.hasSameSource(target))
         throw new RangeError('Point is from a different source');
@@ -96,11 +101,11 @@ export class Point<out T> implements Comparable<Point<unknown>> {
     return this.hasSameSource(other) && this.#offset === other.#offset;
   }
 
-  distanceFrom(other: Point<unknown>): number {
+  distanceFrom(other: Point<unknown>): Integer {
     if (!this.hasSameSource(other))
       throw new RangeError('Point is from a different source');
 
-    return this.#offset - other.#offset;
+    return integer(this.#offset - other.#offset);
   }
 
   compareTo(other: Point<unknown>): number {

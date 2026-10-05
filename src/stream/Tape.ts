@@ -1,4 +1,7 @@
-import { nonNegative, type NonNegative } from '@fundamentry/number';
+import {
+  nonNegativeInteger,
+  type NonNegativeInteger,
+} from '@fundamentry/number';
 
 import { type Seekable } from '#project/type';
 
@@ -35,11 +38,11 @@ export class Tape<out T> extends Cursor<T> implements Seekable {
     return this.#point.isAtEnd();
   }
 
-  tell(): NonNegative {
-    return nonNegative(this.#point.distanceFrom(this.#origin));
+  tell(): NonNegativeInteger {
+    return nonNegativeInteger(this.#point.distanceFrom(this.#origin));
   }
 
-  seek(target: NonNegative | Point<unknown>): void {
+  seek(target: NonNegativeInteger | Point<unknown>): void {
     try {
       this.#point = this.#point.at(target);
     } catch (error) {

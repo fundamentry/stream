@@ -1,4 +1,7 @@
-import { nonNegative, type NonNegative } from '@fundamentry/number';
+import {
+  nonNegativeInteger,
+  type NonNegativeInteger,
+} from '@fundamentry/number';
 
 import { Stream } from './Stream.js';
 
@@ -11,7 +14,7 @@ export class Memo<out T> {
     this.#source = new Stream(source);
   }
 
-  has(index: NonNegative): boolean {
+  has(index: NonNegativeInteger): boolean {
     while (index >= this.#buffer.length) {
       if (this.#source.isAtEnd()) return false;
 
@@ -21,19 +24,19 @@ export class Memo<out T> {
     return true;
   }
 
-  reaches(offset: NonNegative): boolean {
+  reaches(offset: NonNegativeInteger): boolean {
     return (
       Number.isSafeInteger(offset) &&
-      (offset === 0 || this.has(nonNegative(offset - 1)))
+      (offset === 0 || this.has(nonNegativeInteger(offset - 1)))
     );
   }
 
-  get(index: NonNegative): T | undefined {
+  get(index: NonNegativeInteger): T | undefined {
     return this.has(index) ? this.#buffer[index] : undefined;
   }
 
-  slice(start: NonNegative, end: NonNegative): T[] {
-    if (end > start) this.has(nonNegative(end - 1));
+  slice(start: NonNegativeInteger, end: NonNegativeInteger): T[] {
+    if (end > start) this.has(nonNegativeInteger(end - 1));
 
     return this.#buffer.slice(start, end);
   }

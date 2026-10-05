@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { nonNegative } from '@fundamentry/number';
+import { nonNegativeInteger } from '@fundamentry/number';
 
 import { Tape } from './Tape.js';
 
@@ -30,7 +30,7 @@ describe('Tape', () => {
       tape.peek();
       tape.peek();
       tape.next();
-      tape.seek(nonNegative(0));
+      tape.seek(nonNegativeInteger(0));
       tape.peek();
 
       expect(next).toHaveBeenCalledOnce();
@@ -151,7 +151,7 @@ describe('Tape', () => {
 
       tape.next();
       tape.next();
-      tape.seek(nonNegative(0));
+      tape.seek(nonNegativeInteger(0));
 
       expect(tape.tell()).toBe(0);
       expect(tape.next()).toBe(1);
@@ -160,7 +160,7 @@ describe('Tape', () => {
     it('must seek forward, pulling from the source as needed', () => {
       const tape = new Tape([1, 2, 3]);
 
-      tape.seek(nonNegative(2));
+      tape.seek(nonNegativeInteger(2));
 
       expect(tape.tell()).toBe(2);
       expect(tape.next()).toBe(3);
@@ -170,7 +170,7 @@ describe('Tape', () => {
       const tape = new Tape([1, 2, 3]);
 
       tape.next();
-      tape.seek(nonNegative(1));
+      tape.seek(nonNegativeInteger(1));
 
       expect(tape.tell()).toBe(1);
       expect(tape.next()).toBe(2);
@@ -179,7 +179,7 @@ describe('Tape', () => {
     it('must succeed when seeking exactly to the end of the source', () => {
       const tape = new Tape([1, 2]);
 
-      tape.seek(nonNegative(2));
+      tape.seek(nonNegativeInteger(2));
 
       expect(tape.tell()).toBe(2);
     });
@@ -187,7 +187,7 @@ describe('Tape', () => {
     it('must throw a RangeError when seeking past what the source can produce', () => {
       const tape = new Tape([1, 2]);
 
-      expect(() => tape.seek(nonNegative(5))).toThrow(
+      expect(() => tape.seek(nonNegativeInteger(5))).toThrow(
         new RangeError("Invalid seek position: '5'")
       );
     });
@@ -197,7 +197,7 @@ describe('Tape', () => {
 
       tape.next();
 
-      expect(() => tape.seek(nonNegative(5))).toThrow(
+      expect(() => tape.seek(nonNegativeInteger(5))).toThrow(
         new RangeError("Invalid seek position: '5'")
       );
       expect(tape.tell()).toBe(1);
@@ -218,7 +218,7 @@ describe('Tape', () => {
 
       tape.next();
 
-      expect(() => tape.seek(nonNegative(2))).toThrow(error);
+      expect(() => tape.seek(nonNegativeInteger(2))).toThrow(error);
       expect(tape.tell()).toBe(1);
     });
 
@@ -285,8 +285,8 @@ describe('Tape', () => {
 
       tape.next();
       tape.next();
-      tape.seek(nonNegative(0));
-      tape.seek(nonNegative(2));
+      tape.seek(nonNegativeInteger(0));
+      tape.seek(nonNegativeInteger(2));
 
       expect(next).toHaveBeenCalledTimes(2);
     });
@@ -326,7 +326,7 @@ describe('Tape', () => {
 
       const point = tape.point();
 
-      expect(point.distanceFrom(point.at(nonNegative(0)))).toBe(1);
+      expect(point.distanceFrom(point.at(nonNegativeInteger(0)))).toBe(1);
       expect(point.peek()).toBe(2);
     });
 
@@ -338,7 +338,7 @@ describe('Tape', () => {
       tape.next();
       tape.next();
 
-      expect(point.distanceFrom(point.at(nonNegative(0)))).toBe(0);
+      expect(point.distanceFrom(point.at(nonNegativeInteger(0)))).toBe(0);
       expect(point.peek()).toBe(1);
     });
 
@@ -352,7 +352,7 @@ describe('Tape', () => {
       const tape = new Tape({ [Symbol.iterator]: () => ({ next }) });
 
       tape.point().span(() => true);
-      tape.seek(nonNegative(2));
+      tape.seek(nonNegativeInteger(2));
 
       expect(tape.isAtEnd()).toBe(true);
       expect(next).toHaveBeenCalledTimes(3);

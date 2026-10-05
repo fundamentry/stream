@@ -1,6 +1,9 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 
-import { nonNegative } from '@fundamentry/number';
+import {
+  nonNegativeInteger,
+  type NonNegativeInteger,
+} from '@fundamentry/number';
 
 import { Point } from './Point.js';
 
@@ -27,7 +30,7 @@ describe('Point', () => {
     it('must start at the beginning of the source', () => {
       const point = Point.of([1, 2, 3]);
 
-      expect(point.equals(point.at(nonNegative(0)))).toBe(true);
+      expect(point.equals(point.at(nonNegativeInteger(0)))).toBe(true);
     });
 
     it('must not pull from the source until a value is needed', () => {
@@ -57,7 +60,7 @@ describe('Point', () => {
     it('must return 0 for a point at the same offset', () => {
       const point = Point.of([1, 2, 3]);
 
-      expect(point.distanceFrom(point.at(nonNegative(0)))).toBe(0);
+      expect(point.distanceFrom(point.at(nonNegativeInteger(0)))).toBe(0);
     });
 
     it('must throw a RangeError for a point from a different source', () => {
@@ -276,7 +279,7 @@ describe('Point', () => {
       const start = Point.of([1, 2, 3]);
       const { rest } = start.span(() => true);
 
-      const point = rest.at(nonNegative(1));
+      const point = rest.at(nonNegativeInteger(1));
 
       expect(point.distanceFrom(start)).toBe(1);
       expect(point.peek()).toBe(2);
@@ -285,26 +288,26 @@ describe('Point', () => {
     it('must return a point at a later offset, pulling from the source as needed', () => {
       const start = Point.of([1, 2, 3]);
 
-      const point = start.at(nonNegative(2));
+      const point = start.at(nonNegativeInteger(2));
 
       expect(point.distanceFrom(start)).toBe(2);
       expect(point.peek()).toBe(3);
     });
 
     it('must succeed at exactly the end of the source', () => {
-      const point = Point.of([1, 2]).at(nonNegative(2));
+      const point = Point.of([1, 2]).at(nonNegativeInteger(2));
 
       expect(point.isAtEnd()).toBe(true);
     });
 
     it('must throw a RangeError past what the source can produce', () => {
-      expect(() => Point.of([1, 2]).at(nonNegative(5))).toThrow(
+      expect(() => Point.of([1, 2]).at(nonNegativeInteger(5))).toThrow(
         new RangeError("Invalid offset: '5'")
       );
     });
 
     it('must throw a RangeError for an offset that is not an integer', () => {
-      expect(() => Point.of([1, 2]).at(nonNegative(1.5))).toThrow(
+      expect(() => Point.of([1, 2]).at(1.5 as NonNegativeInteger)).toThrow(
         new RangeError("Invalid offset: '1.5'")
       );
     });
@@ -329,7 +332,7 @@ describe('Point', () => {
 
       const point = Point.of({ [Symbol.iterator]: () => ({ next }) });
 
-      expect(() => point.at(nonNegative(Infinity))).toThrow(
+      expect(() => point.at(Infinity as NonNegativeInteger)).toThrow(
         new RangeError("Invalid offset: 'Infinity'")
       );
       expect(next).not.toHaveBeenCalled();
@@ -382,7 +385,7 @@ describe('Point', () => {
     it('must return true for a distinct point at the same offset in the same source', () => {
       const start = Point.of([1, 2, 3]);
 
-      const back = start.at(nonNegative(1)).at(nonNegative(0));
+      const back = start.at(nonNegativeInteger(1)).at(nonNegativeInteger(0));
 
       expect(back).not.toBe(start);
       expect(start.equals(back)).toBe(true);
@@ -422,7 +425,7 @@ describe('Point', () => {
     it('must return 0 for a point at the same offset in the same source', () => {
       const start = Point.of([1, 2, 3]);
 
-      const back = start.at(nonNegative(1)).at(nonNegative(0));
+      const back = start.at(nonNegativeInteger(1)).at(nonNegativeInteger(0));
 
       expect(start.compareTo(back)).toBe(0);
     });
@@ -437,8 +440,8 @@ describe('Point', () => {
 
     it('must order points from the same source by offset when sorting', () => {
       const start = Point.of([1, 2, 3]);
-      const middle = start.at(nonNegative(1));
-      const end = start.at(nonNegative(3));
+      const middle = start.at(nonNegativeInteger(1));
+      const end = start.at(nonNegativeInteger(3));
 
       const sorted = [end, start, middle].sort((a, b) => a.compareTo(b));
 
