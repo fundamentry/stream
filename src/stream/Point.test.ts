@@ -4,6 +4,7 @@ import {
   nonNegativeInteger,
   type NonNegativeInteger,
 } from '@fundamentry/number';
+import { Comparable, Equatable } from '@fundamentry/trait';
 
 import { Point } from './Point.js';
 
@@ -446,6 +447,38 @@ describe('Point', () => {
       const sorted = [end, start, middle].sort((a, b) => a.compareTo(b));
 
       expect(sorted.map(point => point.distanceFrom(start))).toEqual([0, 1, 3]);
+    });
+  });
+
+  describe('Equatable', () => {
+    it('must delegate to equals', () => {
+      const start = Point.of([1, 2, 3]);
+      const { rest } = start.span(() => true);
+
+      expect(start[Equatable.symbol](start.at(nonNegativeInteger(0)))).toBe(
+        true
+      );
+      expect(start[Equatable.symbol](rest)).toBe(false);
+    });
+
+    it('must be used by Equatable.equals', () => {
+      const start = Point.of([1, 2, 3]);
+
+      const back = start.at(nonNegativeInteger(1)).at(nonNegativeInteger(0));
+
+      expect(Equatable.equals(start, back)).toBe(true);
+      expect(Equatable.equals(start, Point.of([1, 2, 3]))).toBe(false);
+    });
+  });
+
+  describe('Comparable', () => {
+    it('must delegate to compareTo', () => {
+      const start = Point.of([1, 2, 3]);
+      const { rest } = start.span(() => true);
+
+      expect(start[Comparable.symbol](rest)).toBe(-1);
+      expect(rest[Comparable.symbol](start)).toBe(1);
+      expect(start[Comparable.symbol](start)).toBe(0);
     });
   });
 });

@@ -4,7 +4,7 @@ import {
   type Integer,
   type NonNegativeInteger,
 } from '@fundamentry/number';
-import { type Comparable } from '@fundamentry/trait';
+import { Comparable, Equatable } from '@fundamentry/trait';
 
 import { Memo } from './Memo.js';
 
@@ -20,7 +20,9 @@ export namespace Point {
   }
 }
 
-export class Point<out T> implements Comparable<Point<unknown>> {
+export class Point<out T>
+  implements Comparable<Point<unknown>>, Equatable<Point<unknown>>
+{
   readonly #memo: Memo<T>;
 
   readonly #offset: NonNegativeInteger;
@@ -110,5 +112,13 @@ export class Point<out T> implements Comparable<Point<unknown>> {
 
   compareTo(other: Point<unknown>): number {
     return Math.sign(this.distanceFrom(other));
+  }
+
+  [Equatable.symbol](other: Point<unknown>): boolean {
+    return this.equals(other);
+  }
+
+  [Comparable.symbol](other: Point<unknown>): number {
+    return this.compareTo(other);
   }
 }

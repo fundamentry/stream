@@ -25,8 +25,8 @@ catalogs:
       specifier: 1.2.0
       version: 1.2.0
     '@fundamentry/trait':
-      specifier: 1.1.0
-      version: 1.1.0
+      specifier: 3.0.0
+      version: 3.0.0
     '@fundamentry/typescript-config':
       specifier: 2.0.0
       version: 2.0.0
@@ -112,7 +112,7 @@ importers:
         version: 1.2.0
       '@fundamentry/trait':
         specifier: 'catalog:'
-        version: 1.1.0
+        version: 3.0.0
     devDependencies:
       '@commitlint/cli':
         specifier: 'catalog:'
@@ -982,8 +982,8 @@ packages:
   '@fundamentry/number@1.2.0':
     resolution: {integrity: sha512-mQB00tDRzZ+WfhAgHZ6Z/vy0AvYaE4KiF1ot/OT3L59rnk1RFezcn2FtqeC2AC7v8kYegKCplO2AtrXukCSIdw==, tarball: https://npm.pkg.github.com/download/@fundamentry/number/1.2.0/c8fc874044211116457cc624470c0c658bfd6df0}
 
-  '@fundamentry/trait@1.1.0':
-    resolution: {integrity: sha512-YwsXLvaXyFd2qFQUrhM3z9Vk5khuowlZA/XlIW+QlttKwx6FJoB9N6jtyWv3Ks4pEvK2YssG4LltLxjW9pWc2g==, tarball: https://npm.pkg.github.com/download/@fundamentry/trait/1.1.0/84c1b432516dacba963db346b6b35fee2cffd0d4}
+  '@fundamentry/trait@3.0.0':
+    resolution: {integrity: sha512-DMSmKKj4OFcFHl5KSnOcJ+eM5r/k4MoICH907HKsvedH3q0DuI7aWAToSvNlzQ4JfbC88HPv2SpqxeAvshYhrQ==, tarball: https://npm.pkg.github.com/download/@fundamentry/trait/3.0.0/377bd12f8921f3a5f3b375ef14ad93ccb61f5ae2}
 
   '@fundamentry/typescript-config@2.0.0':
     resolution: {integrity: sha512-0kN2ZyyV6ZkS0OIp66o+HTVU0JHVZsMQmAh09A6YffpPyPCagUsLLFNtH4SQ8gti5aoxXFvyVXvqHTJKBFLhVw==, tarball: https://npm.pkg.github.com/download/@fundamentry/typescript-config/2.0.0/847fa6d298999c18914fdffafb6ddd2318056ab7}
@@ -4918,7 +4918,7 @@ snapshots:
     dependencies:
       '@fundamentry/brand': 2.0.1
 
-  '@fundamentry/trait@1.1.0': {}
+  '@fundamentry/trait@3.0.0': {}
 
   '@fundamentry/typescript-config@2.0.0(typescript@6.0.3)':
     dependencies:
