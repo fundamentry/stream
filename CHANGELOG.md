@@ -1,3 +1,9 @@
+## 2.0.1
+
+### 🩹 Fixes
+
+- upgrade '@fundamentry/trait' to 3.1.0 ([b6733ca](https://github.com/fundamentry/stream/commit/b6733ca))
+
 # 2.0.0
 
 ### 🚀 Features
